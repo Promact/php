@@ -1,0 +1,18 @@
+FROM php:7.3.2-apache-stretch
+
+RUN apt-get update -y
+RUN apt-get install -y libxml2-dev && docker-php-ext-install exif
+RUN apt-get install -y sendmail libpng-dev zlib1g-dev && docker-php-ext-install gd gettext
+RUN apt-get install -y libgmp-dev && docker-php-ext-install gmp
+RUN apt-get install -y libc-client-dev libkrb5-dev && docker-php-ext-configure imap --with-kerberos --with-imap-ssl && docker-php-ext-install imap
+RUN apt-get install -y zlib1g-dev libicu-dev g++ && docker-php-ext-install intl
+RUN docker-php-ext-install bcmath calendar dba mysqli pcntl pdo_mysql
+RUN apt-get install -y libpq-dev && docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-install pgsql shmop soap sockets sysvmsg sysvsem sysvshm wddx
+RUN apt-get install -y libzip-dev && docker-php-ext-install zip
+ENV EXT_IGBINARY_VERSION=3.0.1
+RUN docker-php-source extract &&  mkdir -p /usr/src/php/ext/igbinary
+RUN curl -fsSL https://github.com/igbinary/igbinary/archive/$EXT_IGBINARY_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/igbinary --strip 1
+RUN docker-php-ext-install igbinary
+RUN apt-get install -y libxslt-dev && docker-php-ext-install xsl opcache
+RUN a2enmod rewrite negotiation
