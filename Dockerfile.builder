@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 RUN apt-get update -y
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get install software-properties-common build-essential -y && add-apt-repository ppa:ondrej/php -y
+RUN apt-get install software-properties-common build-essential unzip -y && add-apt-repository ppa:ondrej/php -y
 RUN apt-get install -y \
     curl \
     php7.2 \
