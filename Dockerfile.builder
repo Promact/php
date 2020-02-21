@@ -6,8 +6,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     software-properties-common \
  && add-apt-repository ppa:ondrej/php -y  && apt-get install -y \
-	build-essential \
-	unzip \
+        build-essential \
+        unzip \
     curl \
     php7.2 \
     php7.2-common \
@@ -28,14 +28,17 @@ RUN apt-get update && apt-get install -y \
     php7.2-soap \
     php7.2-memcached \
     php7.2-igbinary \
-	libpng-dev \
+    libpng-dev \
+    autoconf \
+    libtool \
+    nasm \
  && rm -rf /var/lib/apt/lists/*
 
-#Install nodejs-v10
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -  && \
+#Install nodejs-v8
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -  && \
     apt-get install -y nodejs
- 
-#Install pngquant	
+
+#Install pngquant
 RUN npm install -g --allow-root --unsafe-perm=true pngquant-bin
 
 #Install composer
