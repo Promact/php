@@ -1,9 +1,13 @@
 FROM ubuntu:18.04
 
-RUN apt-get update -y
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get install software-properties-common build-essential unzip -y && add-apt-repository ppa:ondrej/php -y
-RUN apt-get install -y \
+
+#Install dependencies & php
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+ && add-apt-repository ppa:ondrej/php -y  && apt-get install -y \
+	build-essential \
+	unzip \
     curl \
     php7.2 \
     php7.2-common \
@@ -23,9 +27,16 @@ RUN apt-get install -y \
     php7.2-pgsql \
     php7.2-soap \
     php7.2-memcached \
-    php7.2-igbinary
-RUN apt-get install -y libpng-dev
+    php7.2-igbinary \
+	libpng-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+#Install nodejs-v10
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -  && \
     apt-get install -y nodejs
+ 
+#Install pngquant	
 RUN npm install -g --allow-root --unsafe-perm=true pngquant-bin
+
+#Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
