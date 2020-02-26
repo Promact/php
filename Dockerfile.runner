@@ -2,6 +2,7 @@ FROM php:7.2.24-apache-stretch
 
 #Add apt packages dependencies for PHP extensions
 RUN apt-get update && apt-get install -y \
+    libmagickwand-dev \
     libxml2-dev \
         sendmail \
     libpng-dev \
@@ -60,5 +61,16 @@ RUN docker-php-ext-install \
     igbinary \
     xsl \
     opcache
+
+#imagemagic
+RUN printf "\n" | pecl install imagick
+RUN docker-php-ext-enable imagick
+
+RUN \
+  curl -L https://download.newrelic.com/php_agent/release/newrelic-php5-9.7.0.258-linux.tar.gz | tar -C /tmp -zx && \
+  export NR_INSTALL_USE_CP_NOT_LN=1 && \
+  export NR_INSTALL_SILENT=1 && \
+  /tmp/newrelic-php5-*/newrelic-install install && \
+  rm -rf /tmp/newrelic-php5-* /tmp/nrinstall*
 
 RUN a2enmod rewrite negotiation
